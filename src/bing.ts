@@ -1,5 +1,7 @@
+import pLimit from 'p-limit';
 import { FetcherOptions } from '@isdk/web-fetcher';
 import { PaginationConfig, SearchOptions, WebSearcher } from '@isdk/web-searcher';
+import { extractDate } from './extractor/index.js';
 
 export class BingSearcher extends WebSearcher {
   static override alias = ['bing'];
@@ -11,6 +13,9 @@ export class BingSearcher extends WebSearcher {
       timeoutMs: 300_000,
       browser: {
         headless: false,
+        launchOptions: {
+          slowMo: 800,
+        },
       },
       debug: true,
       storage: {
@@ -19,6 +24,7 @@ export class BingSearcher extends WebSearcher {
       },
       actions: [
         { id: 'goto', params: { url: 'https://www.bing.com/search?q=${query}${extraParams}' } },
+        { id: 'waitFor', params: { networkIdle: true, ms: 500 } },
         { id: 'waitFor', params: { selector: '#b_results' } },
         { "action": "trim", "params": { "presets": "all" } },
         {
@@ -94,11 +100,11 @@ export class BingSearcher extends WebSearcher {
     };
   }
 
-  protected override async transform(outputs: Record<string, any>): Promise<any[]> {
+  protected override async transform(outputs: Record<string, any>, options: SearchOptions = {}): Promise<any[]> {
     const results = outputs['results'] || [];
     if (!Array.isArray(results)) return [];
 
-    return results.map(item => {
+    const processedResults = results.map(item => {
       // Clean up title and snippet
       if (item.title) item.title = item.title.trim();
       if (item.snippet) {
@@ -107,5 +113,26 @@ export class BingSearcher extends WebSearcher {
       }
       return item;
     });
+
+    if (options.needDate) {
+      const limit = pLimit(options.concurrency || 5);
+      const tasks = processedResults.map(item =>
+        limit(async () => {
+          if (item.url) {
+            try {
+              const date = await extractDate(item.url, { timeout: 5000 });
+              if (date) {
+                item.date = date;
+              }
+            } catch (e) {
+              // Ignore extraction errors for individual items
+            }
+          }
+        })
+      );
+      await Promise.all(tasks);
+    }
+
+    return processedResults;
   }
 }
