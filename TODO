@@ -1,8 +1,5 @@
-refactor:
-  ☐ 导航`goto`内部支持子动作（主要想解决强页面关联的动作集合）
-    如何处理在导航内部的无关的动作，还是不允许无关的动作在里面？
-    如果支持任意动作，是否允许嵌套？如何优雅的嵌套？
-    是否需要在Engine层面支持？
 bug:
-  ☐ 在 pause 期间，会受到 crawlee 的 requestHandlerTimeoutSecs 的限制。如果 pause 时间过长会导致 requestHandler 超时
-    workaround: 设置 requestHandlerTimeoutSecs 更长的时间或禁用， 默认是60s
+  ☐ 模拟人类行为失败：目前直接使用 `fill` 模拟操作和简单的 `waitFor` 延迟仍无法绕过 Google 的反爬虫检测。
+    - 即使使用 `browser` 引擎，Google 依然能识别出自动化脚本。
+    - 可能原因：Google 可能在检测底层的浏览器指纹、真实的鼠标/键盘事件轨迹，或者对请求头、TLS 指纹有特殊校验。
+    - 下步行动：需要深入研究 Google 的反爬虫（anti-bot）机制，判断是基于行为分析还是环境检测。可能需要使用更低层级的事件模拟（如 `keyboard.type` 而非 `fill`）或增强指纹伪装。
