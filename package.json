@@ -1,7 +1,7 @@
 {
   "name": "@isdk/google-searcher",
   "version": "0.1.0",
-  "description": "A high-level framework for building search engine scrapers, supporting multi-page navigation, session persistence, and result standardization.",
+  "description": "Standardized Google search engine scrapers for @isdk/ai-tools, featuring automated pagination, session persistence, and robust metadata extraction (e.g., publication dates).",
   "license": "MIT",
   "author": "Riceball LEE <snowyu.lee@gmail.com>",
   "homepage": "https://github.com/isdk/google-searcher.js",
@@ -75,7 +75,7 @@
     "web",
     "fetch",
     "crawler",
-    "spider",
+    "search",
     "structure",
     "data"
   ],
