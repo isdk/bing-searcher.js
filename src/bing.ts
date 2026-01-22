@@ -83,6 +83,21 @@ export class BingSearcher extends WebSearcher {
     if (options.region) params.set('cc', options.region);
     if (options.language) params.set('setlang', options.language);
 
+    let enableEnsearch = false;
+    // Use 'international' as the public user-friendly option name
+    const explicit = (options as any).international ?? (options as any).ensearch;
+
+    if (explicit !== undefined) {
+      enableEnsearch = !!explicit;
+    } else {
+      if (options.region) {
+        if (options.region.toUpperCase() !== 'CN') enableEnsearch = true;
+      } else if (options.language) {
+         if (!options.language.toLowerCase().startsWith('zh')) enableEnsearch = true;
+      }
+    }
+    if (enableEnsearch) params.set('ensearch', '1');
+
     // Map SafeSearch
     if (options.safeSearch) {
         if (options.safeSearch === 'strict') params.set('adlt', 'strict');
