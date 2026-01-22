@@ -59,4 +59,33 @@ describe('BingSearcher Options', () => {
     expect(result.extraParams).toContain('cc=US');
   });
 
+  it('should support custom date range', () => {
+    // 2025/12/01-2026/01/22: filters=ex1%3a%22ez5_20423_20475%22
+    const result = searcher.testFormatOptions({
+      timeRange: { from: '2025/12/01', to: '2026/01/22' }
+    });
+    // decodeURIComponent is needed because formatOptions uses URLSearchParams which encodes double quotes
+    expect(decodeURIComponent(result.extraParams)).toContain('filters=ex1:"ez5_20423_20475"');
+  });
+
+  it('should support custom date range with only from', () => {
+    // 2024/01/01: 19723
+    const from = '2024/01/01';
+    const result = searcher.testFormatOptions({
+      timeRange: { from }
+    });
+    const today = Math.floor((Date.now() - new Date().getTimezoneOffset() * 60000) / 86400000);
+    expect(decodeURIComponent(result.extraParams)).toContain(`filters=ex1:"ez5_19723_${today}"`);
+  });
+
+  it('should support year timeRange', () => {
+    const result = searcher.testFormatOptions({
+      timeRange: 'year'
+    });
+    const toDate = new Date();
+    const fromDate = new Date();
+    fromDate.setFullYear(toDate.getFullYear() - 1);
+    const toDays = (d: Date) => Math.floor((d.getTime() - d.getTimezoneOffset() * 60000) / 86400000);
+    expect(decodeURIComponent(result.extraParams)).toContain(`filters=ex1:"ez5_${toDays(fromDate)}_${toDays(toDate)}"`);
+  });
 });

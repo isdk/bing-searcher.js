@@ -67,10 +67,23 @@ export class BingSearcher extends WebSearcher {
         };
         if (timeMap[options.timeRange]) {
           params.set('filters', timeMap[options.timeRange]);
+        } else if (options.timeRange === 'year') {
+          const toDays = (d: Date) => Math.floor((d.getTime() - d.getTimezoneOffset() * 60000) / 86400000);
+          const toDate = new Date();
+          const fromDate = new Date();
+          fromDate.setFullYear(toDate.getFullYear() - 1);
+          params.set('filters', `ex1:"ez5_${toDays(fromDate)}_${toDays(toDate)}"`);
         }
       } else {
-        // Bing's custom range via URL is complex, often using filters=ex1:"ez1" style
-        // For now, we only support predefined ranges or skip custom
+        // Custom Range
+        // 2025/12/01-2026/01/22: filters=ex1:"ez5_20423_20475"
+        const fromDate = new Date(options.timeRange.from);
+        const toDate = options.timeRange.to ? new Date(options.timeRange.to) : new Date();
+
+        if (!isNaN(fromDate.getTime()) && !isNaN(toDate.getTime())) {
+          const toDays = (d: Date) => Math.floor((d.getTime() - d.getTimezoneOffset() * 60000) / 86400000);
+          params.set('filters', `ex1:"ez5_${toDays(fromDate)}_${toDays(toDate)}"`);
+        }
       }
     }
 
