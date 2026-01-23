@@ -75,6 +75,7 @@ export class BingSearcher extends WebSearcher {
     if (options.timeRange) {
       if (typeof options.timeRange === 'string') {
         const timeMap: Record<string, string> = {
+          hour: 'ex1:"ez1"', // Fallback to day
           day: 'ex1:"ez1"',
           week: 'ex1:"ez2"',
           month: 'ex1:"ez3"',

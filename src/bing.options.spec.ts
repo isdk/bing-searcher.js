@@ -65,6 +65,11 @@ describe('BingSearcher Options', () => {
     expect(result.extraParams).toContain('cc=US')
   })
 
+  it('should fallback to day for hour timeRange', () => {
+    const result = searcher.testFormatOptions({ timeRange: 'hour' })
+    expect(decodeURIComponent(result.extraParams)).toContain('filters=ex1:"ez1"')
+  })
+
   it('should support custom date range', () => {
     // 2025/12/01-2026/01/22: filters=ex1%3a%22ez5_20423_20475%22
     const result = searcher.testFormatOptions({
