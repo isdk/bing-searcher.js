@@ -1,5 +1,5 @@
 import pLimit from 'p-limit'
-import { FetcherOptions } from '@isdk/web-fetcher'
+import type { FetcherOptions } from '@isdk/web-fetcher'
 import {
   PaginationConfig,
   SearchOptions,
