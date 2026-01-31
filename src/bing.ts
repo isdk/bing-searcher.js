@@ -5,7 +5,7 @@ import {
   SearchOptions,
   WebSearcher,
 } from '@isdk/web-searcher'
-import { extractDate } from './extractor/index.js'
+import { extractDate } from '@isdk/web-searcher'
 
 export class BingSearcher extends WebSearcher {
   static override alias = ['bing']
