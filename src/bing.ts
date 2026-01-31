@@ -8,6 +8,7 @@ import {
 import { extractDate } from '@isdk/web-searcher'
 
 export class BingSearcher extends WebSearcher {
+  // the search engine name is case sensitive, the formal name is Bing from class name.
   static override alias = ['bing']
 
   override get template(): FetcherOptions {

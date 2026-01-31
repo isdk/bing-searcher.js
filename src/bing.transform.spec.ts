@@ -1,12 +1,13 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
+import { extractDate } from '@isdk/web-searcher'
+
 import { BingSearcher } from './bing.js'
 
 // Mock the extractor
-vi.mock('./extractor/index.js', () => ({
+vi.mock('@isdk/web-searcher', async (importOriginal) => ({
+  ...await importOriginal(),
   extractDate: vi.fn(),
 }))
-
-import { extractDate } from './extractor/index.js'
 
 describe('BingSearcher.transform', () => {
   let searcher: BingSearcher
