@@ -155,7 +155,7 @@ export class BingSearcher extends WebSearcher {
     }
   }
 
-  protected override async transform(
+  override async transform(
     outputs: Record<string, any>,
     options: SearchOptions = {}
   ): Promise<any[]> {
