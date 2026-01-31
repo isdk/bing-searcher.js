@@ -34,7 +34,7 @@ export class BingSearcher extends WebSearcher {
             url: 'https://www.bing.com/search?q=${query}${extraParams}',
           },
         },
-        { id: 'waitFor', params: { networkIdle: true, ms: 500 } },
+        { id: 'waitFor', params: { networkIdle: true, ms: 1000 } },
         { id: 'waitFor', params: { selector: '#b_results' } },
         { action: 'trim', params: { presets: 'all' } },
         {
