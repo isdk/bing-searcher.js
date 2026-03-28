@@ -36,6 +36,7 @@ export class BingSearcher extends WebSearcher {
         },
         { id: 'waitFor', params: { networkIdle: true, ms: 1000 } },
         { id: 'waitFor', params: { selector: '#b_results' } },
+        { id: 'waitFor', params: { networkIdle: true, ms: 1000 } },
         { action: 'trim', params: { presets: 'all' } },
         {
           id: 'extract',
