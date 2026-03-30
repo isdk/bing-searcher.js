@@ -22,7 +22,7 @@ export class BingSearcher extends WebSearcher {
           slowMo: 800,
         },
       },
-      debug: true,
+      // debug: true,
       storage: {
         persist: true,
         purge: false,
@@ -31,9 +31,14 @@ export class BingSearcher extends WebSearcher {
         {
           id: 'goto',
           params: {
-            url: 'https://www.bing.com/search?q=${query}${extraParams}',
+            url: 'https://www.bing.com/',
+            // url: 'https://www.bing.com/search?q=${query}${extraParams}',
           },
         },
+        { id: 'waitFor', params: { selector: '#sb_form_q', ms: 1000 } },
+        { id: 'mouseClick', params: { selector: '#sb_form_q' } },
+        { id: 'keyboardType', params: { text: '${query}' } },
+        { id: 'keyboardPress', params: { key: 'Enter' } },
         { id: 'waitFor', params: { networkIdle: true, ms: 1000 } },
         { id: 'waitFor', params: { selector: '#b_results' } },
         { id: 'waitFor', params: { networkIdle: true, ms: 1000 } },
