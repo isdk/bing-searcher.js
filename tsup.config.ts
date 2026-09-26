@@ -15,6 +15,7 @@ export default defineConfig({
     //   drop_debugger: true,
     // },
     // https://terser.org/docs/options/#mangle-options
+    keep_classnames: /BingSearcher$/,
     "mangle": {
       "properties": {
         "regex": /^_[$]/,
